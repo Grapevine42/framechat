@@ -30,12 +30,114 @@
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4eNRqzjvSO377TBROM49jWkpnphBoaZk"></script>
 
-
   <title>My App</title>
 
   <link rel="stylesheet" href="framework7/css/framework7.min.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
+
+  <script>
+
+
+    function walwalMap() {
+      map = new google.maps.Map(document.getElementById('walwal_map'), {
+        center: {lat: 40.67304, lng: -73.93},
+        zoom: 13
+      });
+
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: {lat: 40.67304, lng: -73.93}
+      });
+      marker.addListener('click', toggleBounce);
+
+      function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+
+        people();
+      }
+
+    }
+
+    function people() {
+
+      var neighborhoods = [
+        {lat: 52.511, lng: 13.447},
+        {lat: 52.549, lng: 13.422},
+        {lat: 52.497, lng: 13.396},
+        {lat: 52.517, lng: 13.394}
+      ];
+
+
+
+
+      // console.log(neighborhoods);
+      //
+      //
+      // getList(function (data) {
+      //   console.log(data);
+      // })
+      //
+      // var image = 'images/people.png';
+      // // var beachMarker = new google.maps.Marker({
+      // //   position: {lat: 40.67304, lng: -73.88},
+      // //   map: map,
+      // //   icon: image
+      // // });
+      //
+      // for (var i = 0; i < neighborhoods.length; i++) {
+      //   var beach = new google.maps.Marker({
+      //     position: neighborhoods[i],
+      //     map: map,
+      //     icon: image
+      //   });
+      //
+      // }
+
+      axios.get(serverurl + 'listPhoto', {})
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+
+    }
+
+    // function getList(callback) {
+    //   // var list = [];
+    //   //
+    //   // var location = {
+    //   //   lat : 1,
+    //   //   lng : 1
+    //   // };
+    //
+    //
+    //   axios.get(serverurl + 'listPhoto', {})
+    //     .then(function (response) {
+    //       data = response;
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     })
+    //     .then(function () {
+    //       // always executed
+    //     });
+    //
+    //   callback(data);
+    //
+    // }
+
+  </script>
 </head>
 <body>
 <div id="app">
@@ -67,6 +169,8 @@
       </div>
     </div>
     <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
+
+    <!-- 왈왈이 페이지-->
     <div id="view-home" class="view view-main tab">
       <!-- Page, data-name contains page name which can be used in page callbacks -->
       <div class="page" data-name="home">
@@ -76,10 +180,30 @@
           </div>
         </div>
         <div class="page-content">
-          홈페이지
+          <div id="walwal_map"></div>
+          <div class="fab fab-right-bottom color-blue">
+            <a href="#">
+              <!-- Icons For iOS Theme -->
+              <i class="icon f7-icons ios-only">add</i>
+              <i class="icon f7-icons ios-only">close</i>
+              <!-- Icons For MD Theme -->
+              <i class="icon material-icons md-only">add</i>
+              <i class="icon material-icons md-only">close</i>
+            </a>
+            <!-- FAB speed dial actions -->
+            <div class="fab-buttons fab-buttons-left">
+              <a href="" class="fab-label"> message </a>
+              <a href="" class="fab-label"> Help me </a>
+            </div>
+          </div>
+          <script>
+            walwalMap()
+          </script>
         </div>
       </div>
     </div>
+
+    <!-- 채팅 페이지 -->
     <div id="view-chat" class="view view-main tab tab-active">
       <div class="page" data-name="home">
         <div class="navbar">
@@ -87,13 +211,13 @@
             <div class="title sliding">Helpy</div>
           </div>
         </div>
-        <div class="toolbar messagebar" style="margin-bottom: 7%; z-index: 200">
+        <div class="toolbar messagebar" style="margin-bottom: 13%; z-index: 200">
           <div class="toolbar-inner">
-            <a class="link send-link" href="#">Cam</a>
-
-
-            <input type="file" id="camera" name="camera" capture="camera" accept="image/*"/>
-
+            <!--<a class="link send-link" href="#">Cam</a>-->
+            <div class="filebox link">
+              <label for="camera">Cam</label>
+              <input type="file" id="camera" name="camera" capture="camera" accept="image/*"/>
+            </div>
             <!--<img id="pic" style="width:100%;"/>-->
 
 
@@ -144,6 +268,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 세팅 페이지 -->
     <div id="view-setting" class="view view-main tab">
       <div class="page" data-name="home">
         <div class="navbar">
@@ -261,7 +387,7 @@
       formData.append('photo', e.target.files[0]);
 
 
-      axios.post('http://127.0.0.1:8080/upload/user',
+      axios.post(serverUrl + '/upload/user',
         formData,
         {
           headers: {
@@ -273,9 +399,10 @@
       }).catch(function (error) {
         console.log(error);
       });
-
     });
   });
+
+
 </script>
 
 <!-- Framework7 library -->

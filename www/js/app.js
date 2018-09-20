@@ -1,6 +1,8 @@
 // Dom7
 var $$ = Dom7;
 
+var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
+
 // Framework7 App main instance
 var app  = new Framework7({
   root: '#app', // App root element
@@ -93,7 +95,7 @@ var responseInProgress = false;
 
 
 // // 소켓 io서버 설정하기
-var socket = io.connect("http://127.0.0.1:8080");
+var socket = io.connect(serverurl);
 // var socket = io.connect("https://grapevine-chatserver.mybluemix.net/");
 
 var myInfo = {
@@ -144,7 +146,7 @@ setUserData();
 
 // Send Message
 $$('.send-link').on('click', function () {
-
+2
   var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
   // return if empty message
   if (!text.length) return;
@@ -176,10 +178,13 @@ $$('.send-link').on('click', function () {
 
 });
 
+
+// enter Key 처리
 $$('.messagebar').keyup(function(e) {
-  enterkey()
+  enterkey();
 });
 
+// enter Key 처리
 function enterkey() {
   if (window.event.keyCode == 13) {
     var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
@@ -211,9 +216,6 @@ function enterkey() {
     tmp = 0;
   }
 }
-
-
-
 
 function receiveMessage(msg) {
 
@@ -267,7 +269,6 @@ function receiveMessage(msg) {
   }, 1000);
 }
 
-
 function makeBtn(label, value) {
   return "<button onclick=\"btnClick('"+value+"')\">"+label+"</button>"
 }
@@ -286,8 +287,6 @@ function btnClick(value) {
   });
   tmp = 0;
 }
-
-
 
 
 
@@ -420,6 +419,8 @@ function closeShel(callbackFunc) {
     });
   return shelInfo;
 }
+
+
 
 
 
