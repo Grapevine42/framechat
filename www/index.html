@@ -44,29 +44,41 @@
   <div class="views tabs ios-edges">
     <div class="toolbar tabbar-labels toolbar-bottom-md">
       <div class="toolbar-inner">
-        <a href="#view-home" class="tab-link tab-link-active">
+        <a href="#view-home" class="tab-link">
           <i class="icon f7-icons ios-only">home</i>
           <i class="icon f7-icons ios-only icon-ios-fill">home_fill</i>
           <i class="icon material-icons md-only">home</i>
           <span class="tabbar-label">Home</span>
         </a>
-        <a href="#view-catalog" class="tab-link">
+        <a href="#view-chat" class="tab-link tab-link-active">
           <i class="icon f7-icons ios-only">list</i>
           <i class="icon f7-icons ios-only icon-ios-fill">list_fill</i>
           <i class="icon material-icons md-only">view_list</i>
-          <span class="tabbar-label">Catalog</span>
+          <span class="tabbar-label">Chatting</span>
         </a>
-        <a href="#view-settings" class="tab-link">
+        <a href="#view-setting" class="tab-link">
           <i class="icon f7-icons ios-only">settings</i>
           <i class="icon f7-icons ios-only icon-ios-fill">settings_fill</i>
           <i class="icon material-icons md-only">settings</i>
-          <span class="tabbar-label">Settings</span>
+          <span class="tabbar-label">Setting</span>
         </a>
       </div>
     </div>
     <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
-    <div id="view-home" class="view view-main tab tab-active">
+    <div id="view-home" class="view view-main tab">
       <!-- Page, data-name contains page name which can be used in page callbacks -->
+      <div class="page" data-name="home">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="title sliding">Helpy</div>
+          </div>
+        </div>
+        <div class="page-content">
+          홈페이지
+        </div>
+      </div>
+    </div>
+    <div id="view-chat" class="view view-main tab tab-active">
       <div class="page" data-name="home">
         <div class="navbar">
           <div class="navbar-inner">
@@ -123,7 +135,7 @@
         </div>
       </div>
     </div>
-    <div id="view-catalog" class="view view-main tab">
+    <div id="view-setting" class="view view-main tab">
       <div class="page" data-name="home">
         <div class="navbar">
           <div class="navbar-inner">
@@ -131,19 +143,7 @@
           </div>
         </div>
         <div class="page-content">
-          asdfsfsafs
-        </div>
-      </div>
-    </div>
-    <div id="view-settings" class="view view-main tab">
-      <div class="page" data-name="home">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="title sliding">Helpy</div>
-          </div>
-        </div>
-        <div class="page-content">
-          asdfsfsafs
+          세팅
         </div>
       </div>
     </div>
