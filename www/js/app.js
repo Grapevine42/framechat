@@ -176,6 +176,44 @@ $$('.send-link').on('click', function () {
 
 });
 
+$$('.messagebar').keyup(function(e) {
+  enterkey()
+});
+
+function enterkey() {
+  if (window.event.keyCode == 13) {
+    var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
+    // return if empty message
+    if (!text.length) return;
+    // Clear area
+    messagebar.clear();
+
+    // Return focus to area
+    messagebar.focus();
+
+    // Add message to messages
+    messages.addMessage({
+      text: text,
+    });
+
+    if (responseInProgress) return;
+    // Receive dummy message
+
+    socket.emit('message', text);
+
+    var tmp = 0;
+    socket.on('message', (data) => {
+      if(tmp==0){
+        receiveMessage(data);
+        tmp = tmp+1;
+      }
+    });
+    tmp = 0;
+  }
+}
+
+
+
 
 function receiveMessage(msg) {
 
