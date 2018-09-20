@@ -7,7 +7,7 @@
     "url": "git+https://github.com/framework7io/framework7-template-tabs.git"
   },
   "scripts": {
-    "serve": "http-server ./www/ -o -c 1 -a localhost",
+    "serve": "http-server ./www/ -o -c 1 -a 0.0.0.0",
     "copy-f7": "cpy node_modules/framework7/js/*.* www/framework7/js && cpy node_modules/framework7/css/*.* www/framework7/css && cpy node_modules/framework7-icons/fonts/*.* www/fonts && cpy node_modules/material-design-icons/iconfont/*.{eot,ttf,woff,woff2} www/fonts",
     "postinstall": "npm run copy-f7"
   },
