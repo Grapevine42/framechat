@@ -1,7 +1,8 @@
 // Dom7
 var $$ = Dom7;
 
-var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
+var serverurl = 'http://localhost:8080/';
+// var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
 
 // Framework7 App main instance
 var app  = new Framework7({
@@ -104,7 +105,8 @@ var myInfo = {
   age: "30",
   gender: "female",
   lat: 0,
-  lng: 0
+  lng: 0,
+  context: null
 };
 
 function geoFindMe(callback) {
@@ -146,7 +148,6 @@ setUserData();
 
 // Send Message
 $$('.send-link').on('click', function () {
-2
   var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
   // return if empty message
   if (!text.length) return;

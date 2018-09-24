@@ -38,18 +38,22 @@
 
   <script>
 
+    function testFun(abc) {
+      console.log(abc);
+    }
+
 
     function walwalMap() {
       map = new google.maps.Map(document.getElementById('walwal_map'), {
-        center: {lat: 40.67304, lng: -73.93},
-        zoom: 13
+        center: {lat: 40.67341, lng: -73.91420},
+        zoom: 20
       });
 
       marker = new google.maps.Marker({
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP,
-        position: {lat: 40.67304, lng: -73.93}
+        position: {lat: 40.67341, lng: -73.91420}
       });
       marker.addListener('click', toggleBounce);
 
@@ -75,8 +79,6 @@
       ];
 
 
-
-
       // console.log(neighborhoods);
       //
       //
@@ -100,10 +102,61 @@
       //
       // }
 
+      var list = [];
+
+
+
       axios.get(serverurl + 'listPhoto', {})
         .then(function (response) {
-          console.log(response);
-        })
+            for (var i = 0; i < response.data.length; i++) {
+              // console.log(response.data[i].lat);
+              var location = {
+                lat: Number(response.data[i].lat),
+                lng: Number(response.data[i].lng)
+              };
+              list.push(location);
+            }
+            // console.log(list);
+
+            var image = 'images/people.png';
+
+
+
+
+            for (var i = 0; i < list.length; i++) {
+              var beach = new google.maps.Marker({
+                position: list[i],
+                map: map,
+                icon: image
+              });
+
+              console.log(list[i]);
+
+              attachSecretMessage(beach, list[i].lat.toString());
+
+            }
+
+
+            function attachSecretMessage(marker, secretMessage) {
+              var infowindow = new google.maps.InfoWindow({
+                content: msgInit('help me plz')
+              });
+
+              marker.addListener('click', function () {
+                infowindow.open(marker.get('map'), marker);
+              });
+            }
+
+            function msgInit(msg) {
+              return "<div>\n" +
+              "      <h1>Help me!</h1>\n" +
+              "      <div>\n" +
+              msg +
+              "      </div>\n" +
+              "    </div>"
+            }
+          }
+        )
         .catch(function (error) {
           console.log(error);
         })
@@ -387,7 +440,7 @@
       formData.append('photo', e.target.files[0]);
 
 
-      axios.post(serverUrl + '/upload/user',
+      axios.post(serverurl + 'upload/user',
         formData,
         {
           headers: {
@@ -399,6 +452,20 @@
       }).catch(function (error) {
         console.log(error);
       });
+
+
+      messages.addMessage({
+        text: '보낸다',
+      });
+
+      messages.addMessage({
+        text: '<strong>Event registered.</strong><br>' +
+          'See details of the event through Sharing map or Setting.',
+        type: 'received',
+        name: 'chatbot',
+        avatar: 'images/botImg.png'
+      });
+
     });
   });
 
