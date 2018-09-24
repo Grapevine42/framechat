@@ -5,7 +5,7 @@ var serverurl = 'http://localhost:8080/';
 // var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
 
 // Framework7 App main instance
-var app  = new Framework7({
+var app = new Framework7({
   root: '#app', // App root element
   id: 'io.framework7.testapp', // App bundle ID
   name: 'Framework7', // App name
@@ -40,8 +40,6 @@ var chatView = app.views.create('#view-chat', {
 var settingView = app.views.create('#view-setting', {
   url: '/setting/'
 });
-
-
 
 
 // Init Messages
@@ -170,9 +168,9 @@ $$('.send-link').on('click', function () {
 
   var tmp = 0;
   socket.on('message', (data) => {
-    if(tmp==0){
+    if (tmp == 0) {
       receiveMessage(data);
-      tmp = tmp+1;
+      tmp = tmp + 1;
     }
   });
   tmp = 0;
@@ -181,7 +179,7 @@ $$('.send-link').on('click', function () {
 
 
 // enter Key 처리
-$$('.messagebar').keyup(function(e) {
+$$('.messagebar').keyup(function (e) {
   enterkey();
 });
 
@@ -209,9 +207,9 @@ function enterkey() {
 
     var tmp = 0;
     socket.on('message', (data) => {
-      if(tmp==0){
+      if (tmp == 0) {
         receiveMessage(data);
-        tmp = tmp+1;
+        tmp = tmp + 1;
       }
     });
     tmp = 0;
@@ -242,17 +240,22 @@ function receiveMessage(msg) {
         avatar: img
       });
 
-      for(var i=0; i<msg.option.length;i++){
-        // console.log(msg.option[i]);
-        messages.addMessage({
-          text: makeBtn(msg.option[i].label, msg.option[i].value.input.text),
-          type: 'received',
-          name: 'chatbot',
-          avatar: img
-        });
+      if(msg.option){
+        for (var i = 0; i < msg.option.length; i++) {
+          // console.log(msg.option[i]);
+          messages.addMessage({
+            text: makeBtn(msg.option[i].label, msg.option[i].value.input.text),
+            type: 'received',
+            name: 'chatbot',
+            avatar: img
+          });
+        }
       }
 
-      if(msg.type == 'map'){
+
+      if (msg.type == 'map') {
+        socket.emit('message', 'event');
+
         // 지도를 띄우는 메시지
         messages.addMessage({
           text: "<div id='map_google1'></div>",
@@ -261,10 +264,20 @@ function receiveMessage(msg) {
           avatar: img
         });
         initMap();
+
+        var tmp = 0;
+        socket.on('message', (data) => {
+          if (tmp == 0) {
+            receiveMessage(data);
+            tmp = tmp + 1;
+          }
+        });
+        tmp = 0;
+
       }
 
 
-      if(msg.type == 'preview'){
+      if (msg.type == 'preview') {
         socket.emit('message', 'event');
 
         messages.addMessage({
@@ -283,12 +296,61 @@ function receiveMessage(msg) {
         });
 
 
+        var tmp = 0;
+        socket.on('message', (data) => {
+          if (tmp == 0) {
+            receiveMessage(data);
+            tmp = tmp + 1;
+          }
+        });
+        tmp = 0;
+      }
+
+      else if(msg.type=='imageList'){
+        socket.emit('message', 'event');
+
+        messages.addMessage({
+          text: '<div class="swiper-container swiper-init demo-swiper">\n' +
+            '  <div class="swiper-wrapper">\n' +
+            '    <div class="swiper-slide">Slide 1</div>\n' +
+            '    <div class="swiper-slide">Slide 2</div>\n' +
+            '    <div class="swiper-slide">Slide 3</div>\n' +
+            '    <div class="swiper-slide">Slide 4</div>\n' +
+            '    <div class="swiper-slide">Slide 5</div>\n' +
+            '    <div class="swiper-slide">Slide 6</div>\n' +
+            '    <div class="swiper-slide">Slide 7</div>\n' +
+            '  </div>' +
+            '</div>',
+          type: 'received',
+          name: 'chatbot',
+          avatar: img
+        });
 
         var tmp = 0;
         socket.on('message', (data) => {
-          if(tmp==0){
+          if (tmp == 0) {
             receiveMessage(data);
-            tmp = tmp+1;
+            tmp = tmp + 1;
+          }
+        });
+        tmp = 0;
+      }
+
+      else if(msg.type =='article'){
+        socket.emit('message', 'event');
+
+        messages.addMessage({
+          text: 'article',
+          type: 'received',
+          name: 'chatbot',
+          avatar: img
+        });
+
+        var tmp = 0;
+        socket.on('message', (data) => {
+          if (tmp == 0) {
+            receiveMessage(data);
+            tmp = tmp + 1;
           }
         });
         tmp = 0;
@@ -302,7 +364,7 @@ function receiveMessage(msg) {
 }
 
 function makeBtn(label, value) {
-  return "<button onclick=\"btnClick('"+value+"')\">"+label+"</button>"
+  return "<button onclick=\"btnClick('" + value + "')\">" + label + "</button>"
 }
 
 
@@ -312,14 +374,13 @@ function btnClick(value) {
 
   var tmp = 0;
   socket.on('message', (data) => {
-    if(tmp==0){
+    if (tmp == 0) {
       receiveMessage(data);
-      tmp = tmp+1;
+      tmp = tmp + 1;
     }
   });
   tmp = 0;
 }
-
 
 
 // 구글맵 관련 함수 정리
@@ -331,13 +392,13 @@ function initMap() {
   });
 
   var orig = {
-    lat : 0,
-    lng : 0
+    lat: 0,
+    lng: 0
   };
 
   var dest = {
-    lat : 0,
-    lng : 0
+    lat: 0,
+    lng: 0
   };
 
   closeShel(function (shelInfo) {
@@ -384,7 +445,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, orig, de
     // using square brackets and a string value as its
     // "property."
     travelMode: 'WALKING'
-  }, function(response, status) {
+  }, function (response, status) {
     if (status == 'OK') {
       directionsDisplay.setDirections(response);
     } else {
@@ -404,7 +465,7 @@ function getCalInfo(orig, dest, callbackFunc) {
     destinations: [destination],
     travelMode: 'WALKING',
     unitSystem: google.maps.UnitSystem.METRIC
-  }, function(response, status) {
+  }, function (response, status) {
     if (status !== 'OK') {
       alert('Error was: ' + status);
     } else {

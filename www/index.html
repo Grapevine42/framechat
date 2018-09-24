@@ -364,7 +364,20 @@
           </div>
         </div>
         <div class="page-content">
-          세팅
+          <div class="swiper-container swiper-init demo-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">Slide 1</div>
+              <div class="swiper-slide">Slide 2</div>
+              <div class="swiper-slide">Slide 3</div>
+              <div class="swiper-slide">Slide 4</div>
+              <div class="swiper-slide">Slide 5</div>
+              <div class="swiper-slide">Slide 6</div>
+              <div class="swiper-slide">Slide 7</div>
+              <div class="swiper-slide">Slide 8</div>
+              <div class="swiper-slide">Slide 9</div>
+              <div class="swiper-slide">Slide 10</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -490,13 +503,24 @@
         text: '보낸다',
       });
 
-      messages.addMessage({
-        text: '<strong>Event registered.</strong><br>' +
-          'See details of the event through Sharing map or Setting.',
-        type: 'received',
-        name: 'chatbot',
-        avatar: 'images/botImg.png'
+      // messages.addMessage({
+      //   text: '<strong>Event registered.</strong><br>' +
+      //     'See details of the event through Sharing map or Setting.',
+      //   type: 'received',
+      //   name: 'chatbot',
+      //   avatar: 'images/botImg.png'
+      // });
+
+      socket.emit('message', 'event');
+
+      var tmp = 0;
+      socket.on('message', (data) => {
+        if (tmp == 0) {
+          receiveMessage(data);
+          tmp = tmp + 1;
+        }
       });
+      tmp = 0;
 
     });
   });
