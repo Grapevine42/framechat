@@ -263,6 +263,37 @@ function receiveMessage(msg) {
         initMap();
       }
 
+
+      if(msg.type == 'preview'){
+        socket.emit('message', 'event');
+
+        messages.addMessage({
+          text: '<div class="selectQuestion">\n' +
+            '      The current Disaster Info.<br>\n' +
+            '      <hr>\n' +
+            '      Earthquakes Info. <br>\n' +
+            '      <span style="font-size: 50px">😀</span>\n' +
+            '      <h3>Advisory</h3><br>\n' +
+            '      Utd Street, Seattle, WA, USA\n' +
+            '      <br><br>\n' +
+            '    </div>',
+          type: 'received',
+          name: 'chatbot',
+          avatar: img
+        });
+
+
+
+        var tmp = 0;
+        socket.on('message', (data) => {
+          if(tmp==0){
+            receiveMessage(data);
+            tmp = tmp+1;
+          }
+        });
+        tmp = 0;
+      }
+
       messages.hideTyping();
       responseInProgress = false;
       // initMap();
