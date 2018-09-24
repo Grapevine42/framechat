@@ -127,7 +127,7 @@
             // var image = 'images/1234.png';
 
 
-            var tmpNum = 0;
+            var tmpNum = 1;
 
             for (var i = 0; i < list.length; i++) {
 
@@ -135,7 +135,7 @@
                 var userInfo = new google.maps.Marker({
                   position: list[i][3],
                   map: map,
-                  icon: 'images/circle/' + tmpNum + '.png'
+                  icon: 'images/circle/user' + tmpNum + '.png'
                 });
 
                 tmpNum = tmpNum + 1;
@@ -150,7 +150,7 @@
                 var userHelp = new google.maps.Marker({
                   position: list[i][3],
                   map: map,
-                  icon: 'images/circle/red.png'
+                  icon: 'images/circle/help.png'
                 });
 
                 console.log(list[i]);
