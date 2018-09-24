@@ -45,15 +45,15 @@
 
     function walwalMap() {
       map = new google.maps.Map(document.getElementById('walwal_map'), {
-        center: {lat: 40.67341, lng: -73.91420},
-        zoom: 20
+        center: {lat: 40.67381, lng: -73.91390},
+        zoom: 18.8
       });
 
       marker = new google.maps.Marker({
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP,
-        position: {lat: 40.67341, lng: -73.91420}
+        position: {lat: 40.67381, lng: -73.91390}
       });
       marker.addListener('click', toggleBounce);
 
@@ -105,41 +105,78 @@
       var list = [];
 
 
-
       axios.get(serverurl + 'listPhoto', {})
         .then(function (response) {
             for (var i = 0; i < response.data.length; i++) {
               // console.log(response.data[i].lat);
+              var tmp = [];
+              tmp.push(response.data[i].path);
+              tmp.push(response.data[i].time);
+              tmp.push(response.data[i].name);
               var location = {
                 lat: Number(response.data[i].lat),
                 lng: Number(response.data[i].lng)
               };
-              list.push(location);
+              tmp.push(location);
+              tmp.push(response.data[i].help);
+
+              list.push(tmp);
             }
             // console.log(list);
 
-            var image = 'images/people.png';
+            // var image = 'images/1234.png';
 
 
-
+            var tmpNum = 0;
 
             for (var i = 0; i < list.length; i++) {
-              var beach = new google.maps.Marker({
-                position: list[i],
-                map: map,
-                icon: image
-              });
 
-              console.log(list[i]);
+              if (list[i][4] == '0') {
+                var userInfo = new google.maps.Marker({
+                  position: list[i][3],
+                  map: map,
+                  icon: 'images/circle/' + tmpNum + '.png'
+                });
 
-              attachSecretMessage(beach, list[i].lat.toString());
+                tmpNum = tmpNum + 1;
+                console.log(list[i]);
+
+                // list[i][0] 거리이름; list[i][1] 시간; list[i][2] 파일명
+
+                attachSecretMessage(userInfo, list[i][0], list[i][1], list[i][2]);
+              }
+
+              else {
+                var userHelp = new google.maps.Marker({
+                  position: list[i][3],
+                  map: map,
+                  icon: 'images/circle/red.png'
+                });
+
+                console.log(list[i]);
+
+                // list[i][0] 거리이름; list[i][1] 시간; list[i][2] 파일명
+
+                attachSecretMessage(userHelp, list[i][0], list[i][1], list[i][2]);
+              }
+              // var beach = new google.maps.Marker({
+              //   position: list[i][3],
+              //   map: map,
+              //   icon: 'images/circle/'+i+'.png'
+              // });
+              //
+              // console.log(list[i]);
+              //
+              // // list[i][0] 거리이름; list[i][1] 시간; list[i][2] 파일명
+              //
+              // attachSecretMessage(beach, list[i][0], list[i][1], list[i][2]);
 
             }
 
 
-            function attachSecretMessage(marker, secretMessage) {
+            function attachSecretMessage(marker, name, time, fileName) {
               var infowindow = new google.maps.InfoWindow({
-                content: msgInit('help me plz')
+                content: msgInit(name, time, fileName)
               });
 
               marker.addListener('click', function () {
@@ -147,13 +184,9 @@
               });
             }
 
-            function msgInit(msg) {
-              return "<div>\n" +
-              "      <h1>Help me!</h1>\n" +
-              "      <div>\n" +
-              msg +
-              "      </div>\n" +
-              "    </div>"
+            function msgInit(name, time, fileName) {
+              return time + '<br>' + fileName + '<br><br>' +
+                '<img src="https://grapevine-chatserver.mybluemix.net/' + name + '" style="width: 150px; height: 150px">';
             }
           }
         )
