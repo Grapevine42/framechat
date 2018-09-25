@@ -1,8 +1,8 @@
 // Dom7
 var $$ = Dom7;
 
-var serverurl = 'http://localhost:8080/';
-// var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
+// var serverurl = 'http://localhost:8080/';
+var serverurl = 'https://grapevine-chatserver.mybluemix.net/';
 
 // Framework7 App main instance
 var app = new Framework7({
@@ -40,6 +40,7 @@ var chatView = app.views.create('#view-chat', {
 var settingView = app.views.create('#view-setting', {
   url: '/setting/'
 });
+
 
 
 // Init Messages
@@ -325,6 +326,28 @@ function receiveMessage(msg) {
           name: 'chatbot',
           avatar: img
         });
+
+        '<div class="message message-received">\n' +
+        '              <div class="message-avatar" style="background-image:url(images/botImg.png);"></div>\n' +
+        '              <div class="message-content">\n' +
+        '                <div class="message-bubble">\n' +
+        '                  <div class="selectQuestion">\n' +
+        '                    The current Disaster Info.<br>\n' +
+        '                    <hr>\n' +
+        '                    Earthquakes Info. <br>\n' +
+        '                    <span style="font-size: 50px">😀</span>\n' +
+        '                    <h3>Advisory</h3><br>\n' +
+        '                    Utd Street, Seattle, WA, USA\n' +
+        '                    <br><br>\n' +
+        '                    Wildfire Info. <br>\n' +
+        '                    <span style="font-size: 50px">😀</span>\n' +
+        '                    <h3>Safe</h3><br>\n' +
+        '                    WA, USA\n' +
+        '                  </div>\n' +
+        '                </div>\n' +
+        '              </div>\n' +
+        '            </div>'
+
 
         var tmp = 0;
         socket.on('message', (data) => {
